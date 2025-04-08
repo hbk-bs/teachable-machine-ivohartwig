@@ -151,6 +151,37 @@ h4 {
    color:white;
    margin:20px ;
    }
+
+   .THEMA {
+    margin:15px;
+    padding: 10px;
+    border-radius: 10px;
+    }
+  
+    .image-container2{
+      display: flex;
+      flex-direction:row;  
+      justify-content:space-evenly;
+      flex-wrap: wrap;
+      }
+    
+      .p5 {
+        padding:10px;
+        height:auto;
+        border-radius: 20px;
+        width: 300px
+        }
+  
+        .p5:hover {
+          transform: scale(1.05);
+          transform: scale(x, y);
+          }
+  
+        figcaption { 
+          text-align:center;
+          color:black;
+          margin-bottom:15px;
+          }
   
   /* main style ends */
   
