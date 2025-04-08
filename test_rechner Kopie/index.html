@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js Starter Project</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #111;
+        }
+        canvas {
+            border-radius: 20px;
+        }
+        .results {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-size: 16px;
+            text-align: left;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ml5@2.0.0/dist/ml5.min.js"></script>
+
+    <script>
+        // Classifier Variable
+        let classifier;
+        let imageModelURL = 'https://teachablemachine.withgoogle.com/models/poz7vYznR/'; // Dein Model-URL
+        let video;
+        let resultsList = [];
+
+        // Lade das Modell
+        function preload() {
+            classifier = ml5.imageClassifier(imageModelURL + 'model.json');
+        }
+
+        // Setup- und Videoinitialisierung
+        function setup() {
+            createCanvas(320, 400); // größerer Canvas, damit der Text Platz hat
+            video = createCapture(VIDEO);
+            video.size(320, 240);
+            video.hide();
+            classifyVideo();
+        }
+
+        // Video rendern und Text anzeigen
+        function draw() {
+            background(0);
+            image(video, 0, 0);
+
+            fill(255);
+            textSize(16);
+            textAlign(LEFT);
+
+            // Alle Ergebnisse untereinander anzeigen
+            for (let i = 0; i < resultsList.length; i++) {
+                let entry = resultsList[i];
+                let txt = `${entry.label}: ${(entry.confidence * 100).toFixed(2)}%`;
+                text(txt, 10, 260 + i * 20); // Text unterhalb des Videos
+            }
+        }
+
+        // Klassifizieren und Ergebnisse holen
+        function classifyVideo() {
+            classifier.classify(video, gotResult);
+        }
+
+        // Ergebnisse bearbeiten
+        function gotResult(error, results) {
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            resultsList = results; // die ganze Liste speichern
+            classifyVideo(); // Wiederholung
+        }
+    </script>
+</body>
+</html>
