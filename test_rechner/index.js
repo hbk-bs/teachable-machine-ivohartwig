@@ -6,8 +6,10 @@ let imageModelURL = 'https://teachablemachine.withgoogle.com/models/poz7vYznR/';
 // Video
 let video;
 let flippedVideo;
-// To store the classification results
-let labels = [];
+// To store the classification
+let label = '';
+let lastLabel = '';  // Variable to store the last label shown
+let confidence = 0;  // Variable to store confidence
 
 // Load the model first
 function preload() {
@@ -31,16 +33,14 @@ function draw() {
   // Draw the video
   image(video, 0, 0);
 
-  // Draw all labels and their confidence
+  // Only display the label if the confidence is >= 98%
   fill(255);
-  textSize(12);
-  textAlign(LEFT);
+  textSize(16);
+  textAlign(CENTER);
   
-  // Display each label and confidence
-  let yOffset = 20;
-  for (let i = 0; i < labels.length; i++) {
-    text(labels[i].label + ': ' + nf(labels[i].confidence * 100, 2, 2) + '%', 10, yOffset);
-    yOffset += 20;
+  // Show the label only if the confidence is above 98% and it's a new label
+  if (confidence >= 0.98) {
+    text(label, width / 2, height - 4);
   }
 }
 
@@ -52,11 +52,14 @@ function classifyVideo() {
 // When we get a result
 function gotResult(results) {
   console.log(results);
-  // Store all results
-  labels = results.map(result => {
-    return { label: result.label, confidence: result.confidence };
-  });
-
+  // Check if the confidence is 98% or more
+  if (results[0].confidence >= 0.98) {
+    // If a new label is detected with 98% confidence, update the label
+    if (results[0].label !== lastLabel) {
+      label = results[0].label;
+      lastLabel = results[0].label; // Store the new label as the last label
+    }
+  }
   // Classify again
   classifyVideo();
 }
