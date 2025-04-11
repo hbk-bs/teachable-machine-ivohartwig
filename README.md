@@ -6,17 +6,17 @@ Teachable Machine Learning is an approach to machine learning that allows users 
 
 
 
-### [Calculator]()
-### [Not Me]()
-### [Mugshot]()
+### [Calculator](calculator.md)
+### [Not Me](not_me.md)
+### [Mugshot](mugshot.md)
 
 ## *Audio Models*
 
-### [Music]()
+### [Music](music.md)
 
 ## *Movement Models* 
 
-### [Start Stop]()
+### [Start Stop](start_stop.md)
 
 
 
