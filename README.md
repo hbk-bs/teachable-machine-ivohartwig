@@ -18,5 +18,12 @@ Teachable Machine Learning is an approach to machine learning that allows users 
 
 ### [Start Stop](start_stop.md)
 
+## *Problems*
+
+* Teachable Machine Learning very inaccurate
+* Many factors influence the accuracy
+* Nice layout for the functions
+* Uncertain which idea I want to pursue
+
 
 
