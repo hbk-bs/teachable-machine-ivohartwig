@@ -1,4 +1,4 @@
-# [Calculator](test_rechner_3)
+# [Calculator](https://hbk-bs.github.io/teachable-machine-ivohartwig/test_rechner_3/)
 
 * Teachable Machine trained on digits
 * Percentage indication of probability
