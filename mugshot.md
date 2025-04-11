@@ -86,10 +86,7 @@ function gotResult(results) {
 	// Und weiter geht's
 	classifyVideo();
 }
-
-  
-
- ````
+````
 
 
 
