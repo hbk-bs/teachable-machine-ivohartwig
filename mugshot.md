@@ -1,4 +1,4 @@
-# [Mugshot](https://hbk-bs.github.io/teachable-machine-ivohartwig/mugshot/)
+# [Mugshot](https://hbk-bs.github.io/teachable-machine-ivohartwig/projects/mugshot/)
 
 * Use pictures of fellow students to build an AI model
 * Pictures in front of a neutral background -> avoid disturbances

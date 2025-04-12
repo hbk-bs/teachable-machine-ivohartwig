@@ -1,4 +1,4 @@
-# [Music](https://hbk-bs.github.io/teachable-machine-ivohartwig/test_audio/)
+# [Music](https://hbk-bs.github.io/teachable-machine-ivohartwig/projects/test_audio/)
 
 * Record start and stop from fellow students
 * Different background noises to train the AI better on the words

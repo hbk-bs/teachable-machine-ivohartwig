@@ -1,4 +1,4 @@
-# [Start Stop](https://hbk-bs.github.io/teachable-machine-ivohartwig/start_stop/)
+# [Start Stop](https://hbk-bs.github.io/teachable-machine-ivohartwig/projects/start_stop/)
 
 * Hands up: start
 * Hands down: stop

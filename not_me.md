@@ -1,4 +1,4 @@
-# [Not Me](https://hbk-bs.github.io/teachable-machine-ivohartwig/not_me/)
+# [Not Me](https://hbk-bs.github.io/teachable-machine-ivohartwig/projects/not_me/)
 
 * Pictures of me and pictures only of the background
 * Percentage indication of probability
