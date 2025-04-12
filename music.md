@@ -21,7 +21,7 @@
 let classifier;
 // Model URL
 // HERE
-let imageModelURL = 'https://teachablemachine.withgoogle.com/models/tKE9mhqTX/';
+let imageModelURL = '';
 
 // Video
 let video;
@@ -65,11 +65,27 @@ function classifyVideo() {
 
 // When we get a result
 function gotResult(results) {
-	console.log(results);
-	// The results are in an array ordered by confidence.
-	// console.log(results[0]);
-	label = results[0].label;
-	// Classifiy again!
+	console.log(results); // Hier siehst du, wie genau deine Labels heißen
+
+	// Reset Werte
+	let play = 0;
+	let stop = 0;
+	
+
+	// Gehe alle Vorhersagen durch
+	results.forEach(result => {
+		let label = result.label.toUpperCase(); // Vorsichtshalber alles groß
+		let confidence = result.confidence;
+
+		if (label === "PLAY") play = confidence;
+		if (label === "STOP") stop = confidence;
+	});
+
+	// Update die Prozentzahlen im HTML
+	document.getElementById("play-val").innerText = Math.round(play * 100) + "%";
+	document.getElementById("stop-val").innerText = Math.round(stop * 100) + "%";
+
+	// Und weiter geht's
 	classifyVideo();
 }
 ````
