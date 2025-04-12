@@ -17,7 +17,7 @@ function preload() {
 }
 
 function setup() {
-	createCanvas(320, 260);
+	createCanvas(320, 240);
 	// Create the video
 	video = createCapture(VIDEO);
 	video.size(320, 240);
@@ -46,10 +46,25 @@ function classifyVideo() {
 
 // When we get a result
 function gotResult(results) {
-	console.log(results);
-	// The results are in an array ordered by confidence.
-	// console.log(results[0]);
-	label = results[0].label;
-	// Classifiy again!
+	console.log(results); // Hier siehst du, wie genau deine Labels heißen
+
+	// Reset Werte
+	let ivo = 0;
+	let notivo = 0;
+
+	// Gehe alle Vorhersagen durch
+	results.forEach(result => {
+		let label = result.label.toUpperCase(); // Vorsichtshalber alles groß
+		let confidence = result.confidence;
+
+		if (label === "IVO") ivo = confidence;
+		if (label === "NOTIVO") notivo = confidence;
+	});
+
+	// Update die Prozentzahlen im HTML
+	document.getElementById("ivo-val").innerText = Math.round(ivo * 100) + "%";
+	document.getElementById("notivo-val").innerText = Math.round(notivo * 100) + "%";
+
+	// Und weiter geht's
 	classifyVideo();
 }

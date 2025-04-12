@@ -7,32 +7,75 @@
     <style>
     html,
     body {
-        height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      font-family: sans-serif;
+      background-color: white;
+      height: 100vh; /* Stellen sicher, dass der Body die gesamte Höhe des Fensters einnimmt */
     }
 
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
     main {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: flex-end;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* Korrektur des Tippfehlers von "space-be" auf "space-between" */
+      align-items: center;
+      width: 100%; /* Breite auf 100% setzen, damit es immer den Bildschirm ausfüllt */
+      max-width: 900px;
+      padding: 20px;
+    }
+
+    .NAVWEB {
+      background-color: #989898c7;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      width: 320px;
+    }
+
+    .navtext {
+      color: white;
+      text-align: center;
+      padding: 2px;
+    }
+
+    .navtext:hover {
+      color: white;
+    }
+
+    canvas {
+      border-radius: 10px;
+    }
+
+    a {
+      text-decoration: none;
+      color: black;
+      margin-top: 10px;
     }
     </style>
 </head>
-<body>
-<main>
-    <div id="sketch"></div>
-    <a href="index.js">souce code</a>
-    </main>
-		<script src="lib/ml5.1.2.1.min.js"></script>
-		<script src="lib/p5.min.js"></script>
-    <!-- <script src="lib/p5.sound.min.js"></script> -->
 
+<body>
+    <main>
+  
+      <div class="container">
+        <div id="sketch"></div>
+        <a href="index.js">Source Code</a>
+      </div>
+  
+      <section class="NAVWEB">
+        <h2 class="navtext">IVO – <span id="ivo-val">0%</span></h2>
+      </section>
+  
+      <section class="NAVWEB">
+        <h2 class="navtext">NOTIVO – <span id="notivo-val">0%</span></h2>
+      </section>
+  
+    </main>
+  
+    <script src="lib/ml5.1.2.1.min.js"></script>
+    <script src="lib/p5.min.js"></script>
     <script src="index.js"></script>
-</body>
-</html>
+  
+  </body>
+  </html>
