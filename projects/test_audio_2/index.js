@@ -1,82 +1,74 @@
-// Classifier Variable
 let classifier;
-// Model URL
-// HERE
-let imageModelURL = 'https://teachablemachine.withgoogle.com/models/n4xma_2NH/';
+let label = 'listening...'; // Status-Label
+let music;
+let isPlaying = false; // Status der Musik
 
-// Video
-let video;
-let flippedVideo;
-// To store the classification
-let label = '';
+let soundModel = 'https://teachablemachine.withgoogle.com/models/n4xma_2NH/';
 
-// Load the model first
 function preload() {
-	classifier = ml5.imageClassifier(imageModelURL + 'model.json');
-	console.log(classifier);
-	music = loadSound("https://hbk-bs.github.io/the-archives-ivohartwig/assets/images/L&W - MAKKO.mp3")
+  // Lade das Teachable Machine Modell
+  music = loadSound("https://hbk-bs.github.io/the-archives-ivohartwig/assets/images/L&W - MAKKO.mp3");
 }
 
 function setup() {
-	createCanvas(320, 260);
-	// Create the video
-	video = createCapture(VIDEO);
-	video.size(320, 240);
-	video.hide();
-
-	// Start classifying
-	classifyVideo();
+  createCanvas(320, 240);
+  // Initialisiere den Klassifikator (warten auf die Ladebestätigung)
+  console.log("Loading classifier...");
+  classifier = ml5.soundClassifier(soundModel + 'model.json', modelReady);
 }
 
+// Diese Funktion wird aufgerufen, wenn das Modell geladen wurde
+function modelReady() {
+  console.log('Model Loaded!');
+  classifier.classify(gotResult); // Sobald das Modell geladen ist, starten wir die Klassifikation
+}
+
+// Zeichne das Label auf dem Canvas
 function draw() {
-	background(0);
-	// Draw the video
-	image(video, 0, 0);
-
-	// Draw the label
-	fill(255);
-	textSize(16);
-	textAlign(CENTER);
-	text(label, width / 2, height - 4);
+  background(0);
+  fill(255);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  text(label, width / 2, height / 2);
 }
 
-// Get a prediction for the current video frame
-function classifyVideo() {
-	classifier.classify(video, gotResult);
-}
+// Verarbeite das Ergebnis der Klassifikation
+function gotResult(error, results) {
+  if (error) {
+    console.error('Fehler bei der Klassifikation:', error);
+    return;
+  }
 
-// When we get a result
-// Globale Musikvariable (hast du schon im preload)
-let music;
-let isPlaying = false; // Status-Flag
+  // Zeige das erste Ergebnis
+  label = results[0].label; // Das erkannte Label
 
-function gotResult(results) {
-	console.log(results);
+  let play = 0;
+  let stop = 0;
 
-	let play = 0;
-	let stop = 0;
+  // Durchlaufe die Ergebnisse und berechne Konfidenz für "PLAY" und "STOP"
+  results.forEach(result => {
+    let soundLabel = result.label.toUpperCase();
+    let confidence = result.confidence;
 
-	results.forEach(result => {
-		let label = result.label.toUpperCase();
-		let confidence = result.confidence;
+    if (soundLabel === "PLAY") play = confidence;
+    if (soundLabel === "STOP") stop = confidence;
+  });
 
-		if (label === "PLAY") play = confidence;
-		if (label === "STOP") stop = confidence;
-	});
+  // Zeige die Prozentwerte der Konfidenz
+  document.getElementById("play-val").innerText = Math.round(play * 100) + "%";
+  document.getElementById("stop-val").innerText = Math.round(stop * 100) + "%";
 
-	document.getElementById("play-val").innerText = Math.round(play * 100) + "%";
-	document.getElementById("stop-val").innerText = Math.round(stop * 100) + "%";
+  // Musiksteuerung basierend auf der Konfidenz
+  if (play > 0.8 && !isPlaying) {
+    music.play(); // Musik starten
+    isPlaying = true;
+  }
 
-	// Musiksteuerung basierend auf Konfidenz
-	if (play > 0.8 && !isPlaying) {
-		music.play();
-		isPlaying = true;
-	}
+  if (stop > 0.8 && isPlaying) {
+    music.stop(); // Musik stoppen
+    isPlaying = false;
+  }
 
-	if (stop > 0.8 && isPlaying) {
-		music.stop();
-		isPlaying = false;
-	}
-
-	classifyVideo();
+  // Starte die Klassifikation erneut, um kontinuierlich zu hören
+  classifier.classify(gotResult);
 }
