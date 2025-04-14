@@ -40,6 +40,13 @@
       width: 320px;
     }
 
+    .SOUND {
+      background-color: #989898c7;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      width: 320px;
+    }
+
     .NAVWEB2:hover {
       background-color:black;
       margin-bottom: 10px;
@@ -65,6 +72,37 @@
       text-decoration: none;
       color: white;
     }
+
+    .soundbar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 0;
+}
+
+.bar {
+  width: 6px;
+  height: 10px;
+  background-color: #fff;
+  animation: bounce 1s infinite ease-in-out;
+  border-radius: 4px;
+  opacity: 0.5;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#bar1 { animation-delay: 0s; }
+#bar2 { animation-delay: 0.1s; }
+#bar3 { animation-delay: 0.2s; }
+#bar4 { animation-delay: 0.3s; }
+#bar5 { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(2.5); opacity: 1; }
+}
+
     </style>
 </head>
 
@@ -86,9 +124,19 @@
         <h2 class="navtext">STOP – <span id="stop-val">0%</span></h2>
       </section>
   
-      <section class="NAVWEB">
-        <h2 class="navtext"></h2>
+      <section class="SOUND">
+        <div class="soundbar-container">
+          <div class="bar" id="bar1"></div>
+          <div class="bar" id="bar2"></div>
+          <div class="bar" id="bar3"></div>
+          <div class="bar" id="bar4"></div>
+          <div class="bar" id="bar5"></div>
+        </div>
+      
       </section>
+
+      
+      
   
       <!-- <div class="results">
         <span id="zero"></span>

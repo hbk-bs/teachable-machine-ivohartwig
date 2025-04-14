@@ -4,6 +4,7 @@ let label = "Warte auf Ton...";
 let music;
 let isPlaying = false;
 
+
 // Soundmodell-URL von Teachable Machine
 let soundModelURL = 'https://teachablemachine.withgoogle.com/models/QPmRhgoqk/'; 
 
@@ -17,9 +18,17 @@ function preload() {
 }
 
 function setup() {
-  noCanvas();
   classifier.classifyStart(gotResult);
+  toggleSoundbar(false);
 
+}
+
+function toggleSoundbar(active) {
+	const bars = document.querySelectorAll('.bar');
+	bars.forEach(bar => {
+		bar.style.animationPlayState = active ? 'running' : 'paused';
+		bar.style.opacity = active ? 1 : 0.3;
+	});
 }
 
 function modelReady() {
@@ -49,15 +58,17 @@ function gotResult(results) {
   document.getElementById("stop-val").innerText = Math.round(stop * 100) + "%";
 
   // Musiksteuerung
-  if (play > 0.3 && !isPlaying) {
+  if (play > 0.1 && !isPlaying) {
     music.play();
     isPlaying = true;
+    toggleSoundbar(true);
   }
 
-  // if (stop > 0.3 && isPlaying) {
-  //   music.stop();
-  //   isPlaying = false;
-  // }
+  if (stop > 0.9 && isPlaying) {
+    music.stop();
+    isPlaying = false;
+    toggleSoundbar(false);
+  }
 
 }
 
