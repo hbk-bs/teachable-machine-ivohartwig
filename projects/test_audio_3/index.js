@@ -5,7 +5,7 @@ let music;
 let isPlaying = false;
 
 // Soundmodell-URL von Teachable Machine
-let soundModelURL = 'https://teachablemachine.withgoogle.com/models/CsBmTPCRQ/'; // <<< ERSETZEN!
+let soundModelURL = 'https://teachablemachine.withgoogle.com/models/CsBmTPCRQ/'; 
 
 function preload() {
   // Musik laden
