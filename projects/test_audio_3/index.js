@@ -6,7 +6,7 @@ let isPlaying = false;
 
 
 // Soundmodell-URL von Teachable Machine
-let soundModelURL = 'https://teachablemachine.withgoogle.com/models/QPmRhgoqk/'; 
+let soundModelURL = 'https://teachablemachine.withgoogle.com/models/vv9XLOSr2/'; 
 
 function preload() {
   // Musik laden
@@ -58,13 +58,13 @@ function gotResult(results) {
   document.getElementById("stop-val").innerText = Math.round(stop * 100) + "%";
 
   // Musiksteuerung
-  if (play > 0.1 && !isPlaying) {
+  if (play > 0.6 && !isPlaying) {
     music.play();
     isPlaying = true;
     toggleSoundbar(true);
   }
 
-  if (stop > 0.9 && isPlaying) {
+  if (stop > 0.3 && isPlaying) {
     music.stop();
     isPlaying = false;
     toggleSoundbar(false);
