@@ -17,76 +17,78 @@
 
 ## Code 
 
-```` // Classifier Variable
+```` // Globale Variablen
 let classifier;
-// Model URL
-// HERE
-let imageModelURL = '';
+let label = "Warte auf Ton...";
+let music;
+let isPlaying = false;
 
-// Video
-let video;
-let flippedVideo;
-// To store the classification
-let label = '';
 
-// Load the model first
+// Soundmodell-URL von Teachable Machine
+let soundModelURL = 'https://teachablemachine.withgoogle.com/models/vv9XLOSr2/'; 
+
 function preload() {
-	classifier = ml5.imageClassifier(imageModelURL + 'model.json');
-	console.log(classifier);
+  // Musik laden
+  music = loadSound("https://hbk-bs.github.io/the-archives-ivohartwig/assets/images/L&W - MAKKO.mp3");
+  // Sound-Classifier laden
+  classifier = ml5.soundClassifier(soundModelURL + 'model.json', {
+    probabilityThreshold: 0.7
+  }, modelReady);
 }
 
 function setup() {
-	createCanvas(320, 260);
-	// Create the video
-	video = createCapture(VIDEO);
-	video.size(320, 240);
-	video.hide();
+  classifier.classifyStart(gotResult);
+  toggleSoundbar(false);
 
-	// Start classifying
-	classifyVideo();
 }
 
-function draw() {
-	background(0);
-	// Draw the video
-	image(video, 0, 0);
-
-	// Draw the label
-	fill(255);
-	textSize(16);
-	textAlign(CENTER);
-	text(label, width / 2, height - 4);
-}
-
-// Get a prediction for the current video frame
-function classifyVideo() {
-	classifier.classify(video, gotResult);
-}
-
-// When we get a result
-function gotResult(results) {
-	console.log(results); // Hier siehst du, wie genau deine Labels heißen
-
-	// Reset Werte
-	let play = 0;
-	let stop = 0;
-	
-
-	// Gehe alle Vorhersagen durch
-	results.forEach(result => {
-		let label = result.label.toUpperCase(); // Vorsichtshalber alles groß
-		let confidence = result.confidence;
-
-		if (label === "PLAY") play = confidence;
-		if (label === "STOP") stop = confidence;
+function toggleSoundbar(active) {
+	const bars = document.querySelectorAll('.bar');
+	bars.forEach(bar => {
+		bar.style.animationPlayState = active ? 'running' : 'paused';
+		bar.style.opacity = active ? 1 : 0.3;
 	});
+}
 
-	// Update die Prozentzahlen im HTML
-	document.getElementById("play-val").innerText = Math.round(play * 100) + "%";
-	document.getElementById("stop-val").innerText = Math.round(stop * 100) + "%";
+function modelReady() {
+  console.log("Sound Model geladen");
+}
 
-	// Und weiter geht's
-	classifyVideo();
+function gotResult(results) {
+  console.log(results); // Hier siehst du die genaue Struktur und die Labels
+
+  // Reset-Werte
+  let play = 0;
+  let stop = 0;
+
+
+  // Alle Vorhersagen durchgehen
+  results.forEach(result => {
+    let label = result.label.toUpperCase();  // Labels in Großbuchstaben (optional, je nach Bedarf)
+    let confidence = result.confidence;
+
+    // Überprüfen, ob das Label übereinstimmt
+    if (label === "PLAY") play = confidence;
+    if (label === "STOP") stop = confidence;
+  });
+
+  // Update der HTML-Anzeige
+  document.getElementById("play-val").innerText = Math.round(play * 100) + "%";
+  document.getElementById("stop-val").innerText = Math.round(stop * 100) + "%";
+
+  // Musiksteuerung
+  if (play > 0.6 && !isPlaying) {
+    music.play();
+    isPlaying = true;
+    toggleSoundbar(true);
+  }
+
+  if (stop > 0.3 && isPlaying) {
+    music.stop();
+    isPlaying = false;
+    toggleSoundbar(false);
+  }
+
 }
 ````
 
