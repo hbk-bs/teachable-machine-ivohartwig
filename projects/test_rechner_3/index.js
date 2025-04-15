@@ -84,6 +84,18 @@ function gotResult(results) {
 		} else {
 			// If '?' is detected, calculate and display the result
 			label = '?';
+			
+			// Calculate the result
+			try {
+				let result = eval(currentExpression);
+				console.log("Berechnung: " + currentExpression + " = " + result);
+				// Display the result
+				document.getElementById('result').innerText = " = " + result;
+				resultDisplayed = true;
+			} catch (error) {
+				console.error("Fehler bei der Berechnung:", error);
+				document.getElementById('result').innerText = "Fehler in der Berechnung";
+			}
 		}
 	}
 
