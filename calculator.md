@@ -58,8 +58,8 @@ function draw() {
 	// Draw the current expression
 	fill(255);
 	textSize(32);
-	textAlign(CENTER, CENTER);
-	text(currentExpression, width / 2, height / 2);
+	
+	
 
 	// Only show the result when '?' is detected
 	if (label === '?' && !resultDisplayed) {
@@ -88,25 +88,54 @@ function gotResult(results) {
 	console.log(results);
 	// The results are in an array ordered by confidence.
 	// Check the highest confidence result
-	let currentLabel = results[0].label;
-	let currentConfidence = results[0].confidence;
+let currentLabel = results[0].label;
+let currentConfidence = results[0].confidence;
 
-	// Only update if the confidence is greater than or equal to 98% and it's a new label
-	if (currentConfidence >= 0.98 && currentLabel !== lastLabel) {
-		lastLabel = currentLabel; // Update the last label to prevent changes until a new high-confidence label is detected
+// Only update if the confidence is greater than or equal to 98% and it's a new label
+if (currentConfidence >= 0.98 && currentLabel !== lastLabel) {
+    lastLabel = currentLabel; // Update the last label to prevent changes until a new high-confidence label is detected
 
-		// If it's not a question mark, add it to the expression
-		if (currentLabel !== '?') {
-			currentExpression += currentLabel;
-			resultDisplayed = false; // Reset result displayed flag so it won't be shown before the question mark
-		} else {
-			// If '?' is detected, calculate and display the result
-			label = '?';
-		}
-	}
+    // If it's not a question mark, add it to the expression
+    if (currentLabel !== '?') {
+        currentExpression += currentLabel;
+        resultDisplayed = false; // Reset result displayed flag so it won't be shown before the question mark
+        
+      // Update the equation display whenever a new symbol is added
+	  document.getElementById('equation').innerText = currentExpression;
+    } else {
+        // If '?' is detected, calculate and display the result
+        label = '?';
+        
+        // Calculate the result
+        try {
+            let result = eval(currentExpression);
+            console.log("Berechnung: " + currentExpression + " = " + result);
+            // Display the result
+            document.getElementById('result').innerText = " = " + result;
+            resultDisplayed = true;
+            
+            // Reset the expression after a delay (3000 milliseconds = 3 seconds)
+            setTimeout(() => {
+                currentExpression = "";
+                document.getElementById('equation').innerText = currentExpression;
+                document.getElementById('result').innerText = "";  // Clear the result as well
+            }, 5000);
+        } catch (error) {
+            console.error("Fehler bei der Berechnung:", error);
+            document.getElementById('result').innerText = "Fehler in der Berechnung";
+            
+            // Reset after error as well, but with shorter delay
+            setTimeout(() => {
+                currentExpression = "";
+                document.getElementById('equation').innerText = currentExpression;
+                document.getElementById('result').innerText = "";
+            }, 2000);
+        }
+    }
+}
 
-	// Classify again!
-	classifyVideo();
+// Classify again!
+classifyVideo();
 }
  ````
 
